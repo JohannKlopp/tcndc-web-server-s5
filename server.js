@@ -9,29 +9,41 @@ hbs.registerPartials(__dirname + "/views/partials"); // add support for partials
 app.set("view engine", "hbs"); // "handlebars" is a view engine for express, just like "pug"
 
 
-// app.use( (req, res, next) => { //since we're doing sth async here, next() has to be called for the middleware to continue.
-//   var now = new Date().toString();
-//   var log = `${now}: ${req.method} ${req.url}`;
-//   console.log(log);
-//   fs.appendFile("server.log", log + "\n", (err) => {
-//     if (err) {
-//       console.log("Unable to append to server.log.");
-//     }
-//   });
-//   next();
-// });
+
+
+//  *********************************************************
+//  "Helpers" or "Variables" that I can put into my html code
+//  to get/perform what I wrote into the function here
+//  *********************************************************
 
 hbs.registerHelper("getCurrentYear", () => {
   return new Date().getFullYear();
 });
 
 hbs.registerHelper("screamIt", (text) => {
-  return text.toUpperCase();
+  return text.toLowerCase();
 });
 
+hbs.registerHelper("linkToGH", (text) => {
+  var myGhSite = "<a href=https://github.com/JohannKlopp>"+text+"</a>";
+  return myGhSite;
+});
+
+hbs.registerHelper("linkToJK", (text) => {
+  var mySite = "<a href=http://johannklopp.com/>"+text+"</a>";
+  return mySite;
+});
+
+
+
+
+//  ***************************
+//  Navigation on the website
+//  ***************************
+
 app.get("/", (req, res) => {
-  res.render("home.hbs", {
-    welcomeMessage: "Welcome to this wonderful world!",
+  res.render("home.hbs", { // html file "home.hbs" i.e. has property "welcomeMessage" to be used inside its html code like a variable
+    welcomeMessage: "Welcome to this Wonderful World!",
     pageTitle: "Home Page",
   });
 });
@@ -42,12 +54,26 @@ app.get("/about", (req, res) => {
   });
 });
 
+app.get("/projects", (req, res) => {
+  res.render("projects.hbs", {
+    pageTitle: "Johann's Projects",
+    myGhMsg: "my GitHub",
+  });
+});
+
 // /bad - send back JSON with errorMessage property "Error handling this request"
 app.get("/bad", (req, res) => {
   res.send({
     errorMessage: "Uups unable to handle this request."
   });
 });
+
+
+
+
+//  ***************************
+//  Setting up the server itself
+//  ***************************
 
 app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
