@@ -43,7 +43,7 @@ hbs.registerHelper("linkToJK", (text) => {
 
 app.get("/", (req, res) => {
   res.render("home.hbs", { // html file "home.hbs" i.e. has property "welcomeMessage" to be used inside its html code like a variable
-    welcomeMessage: "Welcome to this Wonderful World!",
+    welcomeMessage: "Isn't this crazy?",
     pageTitle: "Home Page",
   });
 });
